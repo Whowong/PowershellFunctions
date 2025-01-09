@@ -3,12 +3,14 @@ param(
     $TriggerMetadata
 )
 
+$results = 1
 # Parse the request body
 if ($Request.Body) {
     $body = $Request.Body | ConvertFrom-Json
+    $results = if ($body.PSObject.Properties['results']) { $body.results } else { $results = 1 }
+    $gender = if ($body.PSObject.Properties['gender']) { $body.gender } else { $null }
 } 
-$results = if ($body.PSObject.Properties['results']) { $body.results } else { 1 }
-$gender = if ($body.PSObject.Properties['gender']) { $body.gender } else { $null }
+
 
 # Log the request
 Write-Output "Received POST request with results=$results and gender=$gender"

@@ -4,19 +4,28 @@ param(
 )
 
 $numParagraphs = 1
+
 # Parse the request body
 if ($Request.Body) {
     $body = $Request.Body | ConvertFrom-Json
-    $numParagraphs = if ($body.PSObject.Properties['numParagraphs']) { $body.numParagraphs } else { $numParagraphs = 1 }
+    $numParagraphs = if ($body.PSObject.Properties['numParagraphs']) 
+                    { 
+                        $body.numParagraphs 
+                    } 
+                    else 
+                    { 
+                        $numParagraphs = 1 
+                    }
 } 
 
+Write-Output "numParagraphs: $numParagraphs"
 # Define the API endpoint
-$apiUrl = "https://taylor-swift-api.sarbo.workers.dev/lyrics?shouldRandomizeLyrics=true&numberOfParagraphs=$numParagraphs"
+$apiUrl = "https://loripsum.net/api/plaintext/$numParagraphs"
 
 # Call the API
 try {
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get
-
+  
     Write-Output $response
     $statusCode = 200
 } catch {
