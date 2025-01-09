@@ -1,14 +1,15 @@
 param(
     $Request,
-    $TriggerMetadata,
-    [Parameter(Mandatory=$false)]
-    [int]$results = 1,
-    [Parameter(Mandatory=$false)]
-    [string]$gender
+    $TriggerMetadata
 )
 
+# Parse the request body
+$body = $Request.Body | ConvertFrom-Json
+$results = $body.results
+$gender = $body.gender
+
 # Log the request
-Write-Output "Received POST request"
+Write-Output "Received POST request with results=$results and gender=$gender"
 
 # Build the API URL with optional parameters
 $apiUrl = "https://randomuser.me/api/?results=$results"
