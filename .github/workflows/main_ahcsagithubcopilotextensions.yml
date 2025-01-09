@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Powershell project to Azure Function App - GetRandomCommitMessage
+name: Build and deploy Powershell project to Azure Function App - AHCSAGitHubCopilotExtensions
 
 on:
   push:
@@ -25,15 +25,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5AF86E48A4EE4D37AFF6D8473CE747AE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_74A602EDEEF340219F758EA212031ED8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F2AF4DBAB9014153A3C25D23956FF650 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BCC66BFD9F1740209E4E6BD7989B434D }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA5396AA61384761B1F7B85E96652BAC }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C2194BE01F34489C974D76B0A068F3C1 }}
 
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'GetRandomCommitMessage'
+          app-name: 'AHCSAGitHubCopilotExtensions'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           
