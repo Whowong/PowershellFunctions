@@ -1,25 +1,34 @@
-using namespace System.Net
+param(
+    $Request,
+    $TriggerMetadata,
+    [Parameter(Mandatory=$false)]
+    [int]$results = 1,
+    [Parameter(Mandatory=$false)]
+    [string]$gender
+)
 
-# Input bindings are passed in via param block.
-param($Request, $TriggerMetadata)
+# Log the request
+Write-Output "Received POST request"
 
-# Write to the Azure Functions log stream.
-Write-Host "PowerShell HTTP trigger function processed a request."
-
-# Interact with query parameters or the body of the request.
-$name = $Request.Query.Name
-if (-not $name) {
-    $name = $Request.Body.Name
+# Build the API URL with optional parameters
+$apiUrl = "https://randomuser.me/api/?results=$results"
+if ($gender) {
+    $apiUrl += "&gender=$gender"
 }
 
-$body = "GetRandomName HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-
-if ($name) {
-    $body = "Hello, $name. This HTTP triggered function executed successfully."
+# Perform a GET request to the website
+try {
+    $response = Invoke-RestMethod -Uri $apiUrl
+    $statusCode = 200
+    $body = $response
+} catch {
+    Write-Error "Error fetching data from $($apiUrl): $_"
+    $statusCode = 500
+    $body = "Error retrieving user data"
 }
 
-# Associate values to output bindings by calling 'Push-OutputBinding'.
+# Create the HTTP response
 Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
-    StatusCode = [HttpStatusCode]::OK
+    StatusCode = $statusCode
     Body = $body
 })
