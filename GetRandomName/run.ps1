@@ -4,9 +4,11 @@ param(
 )
 
 # Parse the request body
-$body = $Request.Body | ConvertFrom-Json
-$results = $body.results
-$gender = $body.gender
+if ($Request.Body) {
+    $body = $Request.Body | ConvertFrom-Json
+} 
+$results = if ($body.PSObject.Properties['results']) { $body.results } else { 1 }
+$gender = if ($body.PSObject.Properties['gender']) { $body.gender } else { $null }
 
 # Log the request
 Write-Output "Received POST request with results=$results and gender=$gender"
